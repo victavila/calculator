@@ -3,6 +3,7 @@ const operatorButtons = document.querySelectorAll(".operator");
 const equalButton = document.querySelector("#equal");
 const display = document.querySelector("#display");
 const clear = document.querySelector("#clear");
+const sign = document.querySelector("#sign");
 let equal = 0;
 let num1 = "";
 let operation = "";
@@ -98,4 +99,24 @@ equalButton.addEventListener("click", function () {
 clear.addEventListener("click", function () {
   clearAll();
   display.textContent = 0;
+});
+
+sign.addEventListener("click", function () {
+  if (num2 === "") {
+    if (num1.includes("-")) {
+      num1 = num1.substring(1);
+      display.textContent = num1;
+    } else {
+      num1 = "-" + num1;
+      display.textContent = num1;
+    }
+  } else {
+    if (num2.includes("-")) {
+      num2 = num2.substring(1);
+      display.textContent = num2;
+    } else {
+      num2 = "-" + num2;
+      display.textContent = num2;
+    }
+  }
 });
