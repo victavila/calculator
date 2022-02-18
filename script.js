@@ -4,6 +4,7 @@ const equalButton = document.querySelector("#equal");
 const display = document.querySelector("#display");
 const clear = document.querySelector("#clear");
 const sign = document.querySelector("#sign");
+const percentage = document.querySelector("#percentage");
 let equal = 0;
 let num1 = "";
 let operation = "";
@@ -118,5 +119,18 @@ sign.addEventListener("click", function () {
       num2 = "-" + num2;
       display.textContent = num2;
     }
+  }
+});
+
+percentage.addEventListener("click", function () {
+  if (num2 === "") {
+    if (num1 === "") {
+      num1 = 0;
+    }
+    num1 = divide(parseFloat(num1), 100).toString();
+    display.textContent = num1;
+  } else {
+    num2 = divide(parseFloat(num2), 100).toString();
+    display.textContent = num2;
   }
 });
