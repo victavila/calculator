@@ -55,6 +55,11 @@ body {
   width: 46%;
 }
 
+.btn.operator.select {
+  background-color: #fff;
+  color: #ff9500;
+}
+
 .btn.number {
   background-color: #777;
   color: #eee;

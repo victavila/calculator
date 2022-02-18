@@ -30,15 +30,17 @@ function divide(num1, num2) {
   }
 }
 
-function operate(operator, num1, num2) {
-  return operator(num1, num2);
-}
-
 function clearAll() {
   operation = "";
   num1 = "";
   num2 = "";
   equal = 0;
+}
+
+function clearButtons() {
+  operatorButtons.forEach((button) => {
+    button.classList.remove("select");
+  });
 }
 
 numberButtons.forEach((button) => {
@@ -49,14 +51,20 @@ numberButtons.forEach((button) => {
     if (operation === "") {
       if (num1.includes(".") && button.textContent === ".") {
       } else {
-        num1 += button.textContent;
-        display.textContent = num1;
+        if (num1.length > 10) {
+        } else {
+          num1 += button.textContent;
+          display.textContent = num1;
+        }
       }
     } else if (operation != "") {
       if (num2.includes(".") && button.textContent === ".") {
       } else {
-        num2 += button.textContent;
-        display.textContent = num2;
+        if (num2.length > 10) {
+        } else {
+          num2 += button.textContent;
+          display.textContent = num2;
+        }
       }
     }
   });
@@ -74,31 +82,42 @@ operatorButtons.forEach((button) => {
       }
       if (num1 != "" && num2 != "") {
         num1 = window[operation](parseFloat(num1), parseFloat(num2));
-        display.textContent = num1;
+        if (num1.toString().length > 15) {
+          display.textContent = num1.toPrecision(15);
+        } else {
+          display.textContent = num1;
+        }
         num2 = "";
       }
       if (num1 === "") {
         num1 = 0;
       }
       operation = button.id;
-      console.log(operation);
+      clearButtons();
+      button.classList.add("select");
     }
   });
 });
 
 equalButton.addEventListener("click", function () {
+  clearButtons();
   if (num1 === "Error") {
     display.textContent = "Error";
     equal = 1;
-  } else {
+  } else if (num2 != "") {
     num1 = window[operation](parseFloat(num1), parseFloat(num2));
-    display.textContent = num1;
+    if (num1.toString().length > 15) {
+      display.textContent = num1.toPrecision(10);
+    } else {
+      display.textContent = num1;
+    }
     equal = 1;
   }
 });
 
 clear.addEventListener("click", function () {
   clearAll();
+  clearButtons();
   display.textContent = 0;
 });
 
@@ -128,9 +147,17 @@ percentage.addEventListener("click", function () {
       num1 = 0;
     }
     num1 = divide(parseFloat(num1), 100).toString();
-    display.textContent = num1;
+    if (num1.length > 15) {
+      display.textContent = parseFloat(num1).toPrecision(10);
+    } else {
+      display.textContent = num1;
+    }
   } else {
     num2 = divide(parseFloat(num2), 100).toString();
-    display.textContent = num2;
+    if (num2.length > 15) {
+      display.textContent = parseFloat(num2).toPrecision(10);
+    } else {
+      display.textContent = num2;
+    }
   }
 });
