@@ -3,7 +3,7 @@ const operatorButtons = document.querySelectorAll(".operator");
 const equalButton = document.querySelector("#equal");
 const display = document.querySelector("#display");
 const clear = document.querySelector("#clear");
-let displayValue = "";
+let equal = 0;
 let num1 = "";
 let operation = "";
 let num2 = "";
@@ -21,55 +21,81 @@ function multiply(num1, num2) {
 }
 
 function divide(num1, num2) {
-  return num1 / num2;
+  if (num2 === 0) {
+    return "Error";
+  } else {
+    return num1 / num2;
+  }
 }
 
 function operate(operator, num1, num2) {
   return operator(num1, num2);
 }
 
+function clearAll() {
+  operation = "";
+  num1 = "";
+  num2 = "";
+  equal = 0;
+}
+
 numberButtons.forEach((button) => {
   button.addEventListener("click", function () {
-    displayValue += button.textContent;
-    display.textContent = displayValue;
+    if (equal === 1 && num1 != "Error") {
+      clearAll();
+    }
+    if (operation === "") {
+      if (num1.includes(".") && button.textContent === ".") {
+      } else {
+        num1 += button.textContent;
+        display.textContent = num1;
+      }
+    } else if (operation != "") {
+      if (num2.includes(".") && button.textContent === ".") {
+      } else {
+        num2 += button.textContent;
+        display.textContent = num2;
+      }
+    }
   });
 });
 
 operatorButtons.forEach((button) => {
   button.addEventListener("click", function () {
-    if (num1 === "") {
-      displayValue = display.textContent;
-      num1 = displayValue;
-    }
-    if (operation != "" && displayValue != "") {
-      num2 = displayValue;
-      displayValue = window[operation](parseFloat(num1), parseFloat(num2));
-      num1 = displayValue;
-      display.textContent = num1;
+    if (num1 === "Error" && num2 != "") {
       num2 = "";
-      operation = "";
-      displayValue = "";
+      display.textContent = "Error";
+    } else {
+      if (equal === 1) {
+        num2 = "";
+        equal = 0;
+      }
+      if (num1 != "" && num2 != "") {
+        num1 = window[operation](parseFloat(num1), parseFloat(num2));
+        display.textContent = num1;
+        num2 = "";
+      }
+      if (num1 === "") {
+        num1 = 0;
+      }
+      operation = button.id;
+      console.log(operation);
     }
-    display.textContent = num1;
-    displayValue = "";
-    operation = button.id;
-    console.log(operation);
   });
 });
 
 equalButton.addEventListener("click", function () {
-  num2 = displayValue;
-  displayValue = window[operation](parseFloat(num1), parseFloat(num2));
-  num1 = displayValue;
-  display.textContent = num1;
-  num2 = "";
-  operation = "";
-  displayValue = "";
+  if (num1 === "Error") {
+    display.textContent = "Error";
+    equal = 1;
+  } else {
+    num1 = window[operation](parseFloat(num1), parseFloat(num2));
+    display.textContent = num1;
+    equal = 1;
+  }
 });
 
 clear.addEventListener("click", function () {
-  num1 = "";
-  num2 = "";
-  displayValue = "";
+  clearAll();
   display.textContent = 0;
 });
